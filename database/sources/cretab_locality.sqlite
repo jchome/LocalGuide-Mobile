@@ -1,0 +1,14 @@
+/*
+ * Lancer la commande suivante pour insérer les données
+ * cat cretab_locality.sqlite | sqlite3 ../database.sdb
+ */
+ 
+CREATE TABLE locgui_localite (
+	locidloc integer NOT NULL PRIMARY KEY AUTOINCREMENT , 
+	loclbnom varchar(255) NOT NULL , 
+	locnulat char(24) NOT NULL , 
+	locnulon char(24) NOT NULL 
+);
+
+
+

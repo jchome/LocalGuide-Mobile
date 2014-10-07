@@ -1,0 +1,66 @@
+<ListPointOfInterests>:
+	logLabel: logLabel_id
+	containerListView: list_id
+
+	BoxLayout:
+		orientation: 'vertical'
+		canvas.before:
+			Color:
+				rgba: 1,1,1, 1
+			Rectangle:
+				source: "images/background.jpg"
+				pos: self.pos
+				size: self.size
+				
+		ActionBar:
+			background_image: "images/empty-25b.png"
+			pos_hint: {'top':1}
+			ActionView:
+				use_separator: True
+				ActionPrevious:
+					title: 'Points d\'interet'
+					#with_previous: False
+					previous_image: "images/ic_action_previous_item.png"
+					app_icon: "images/app-icon.png"
+					on_press: root.go_back()
+				
+				ActionOverflow:
+				
+				ActionButton:
+					text: 'Map'
+					icon: "images/ic_action_map.png"
+					on_press: root.display_map()
+				ActionButton:
+					text: 'Refresh'
+					icon: "images/ic_action_refresh.png"
+					on_press: root.refresh()
+				
+					
+		# Small Padding
+		Label:
+			canvas.before:
+				Color:
+					rgba: 0.5,0.5,0.5, 0.3
+				Rectangle:
+					pos: self.pos
+					size: self.size
+			text: "Liste des points d'intéret"
+			font_size: '22sp'
+			font_name: "fonts/segoe_ui_light.ttf"
+			size_hint_y: None
+			height: sp(26)
+			halign: 'left'
+			text_size: (self.size[0]-sp(20), None)
+			
+		ListView:
+			id: list_id
+			
+		# Log line
+		Label: 
+			id: logLabel_id
+			text: ""
+			
+			size_hint_y: None
+			height: '20sp'
+			font_size: '12sp'
+		

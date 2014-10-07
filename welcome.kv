@@ -1,0 +1,74 @@
+#:set padding_x_data -40
+
+<Welcome>:
+	logLabel: logLabel_id
+	canvas.before:
+		#Color:
+			# 51 51 51
+			#rgba: 0.208, 0.208, 0.208, 1
+		Rectangle:
+			pos: self.pos
+			size: self.size
+			source: 'images/welcome.jpg'
+	
+	BoxLayout:
+		orientation: 'vertical'
+		spacing: '10sp'
+		Label:
+			text: " "
+			size_hint_y: 0.1
+			
+			
+		Label:
+			text: "Local Guide"
+			font_size: '40sp'
+			font_name: "fonts/segoe_ui_light.ttf"
+			color: (1, 1, 1, 0.95)
+			size_hint_y: None
+			height: sp(45)
+			
+		Label:
+			text: "Un guide local dans votre poche"
+			font_name: "fonts/segoe_ui_light.ttf"
+			font_size: '18sp'
+			halign: 'right'
+			text_size: (self.width + (2*padding_x_data), None)
+			color: (1, 1, 1, 0.5)
+			size_hint_y: None
+			height: sp(25)
+			
+		Label:
+			text: " "
+			size_hint_y: 0.5
+		
+
+		BoxLayout:
+			## reduction de la taille du bouton
+			size_hint_x: 0.8
+			size_hint_y: None
+			height: '60sp'
+			
+			## position au centre
+			pos_hint: {'center_x':.5, 'center_y': .5}
+			
+			orientation: 'vertical'
+			Button: 
+				id: enterButton
+				# 0 142 215
+				background_color: 0, 0.557 , 0.843, 1
+				background_normal: ""
+				background_down: ""
+				
+				text: "Entrer"
+				font_size: '30sp'
+				color: (1, 1, 1, 1)
+				
+				on_press: root.do_enter()
+			
+		Label:
+			id: logLabel_id
+			text: " "
+
+			size_hint_y: None
+			font_size: '12sp'
+			color: (0, 0, 0, 0.5)

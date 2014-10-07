@@ -1,0 +1,46 @@
+<ListCategorys>:
+	logLabel: logLabel_id
+	containerListView: list_id
+
+	BoxLayout:
+		orientation: 'vertical'
+
+		ActionBar:
+			pos_hint: {'top':1}
+			ActionView:
+				use_separator: True
+				ActionPrevious:
+					title: 'Categorie'
+					#with_previous: False
+					on_press: root.manager.back()
+				
+				ActionOverflow:
+				
+				ActionButton:
+					text: 'Refresh'
+					icon: "images/ic_action_refresh.png"
+					on_press: root.refresh()
+				
+				ActionButton:
+					text: 'New'
+					icon: "images/ic_action_new.png"
+					on_press: root.newItem()
+					
+		# Small Padding
+		Label:
+			text: " "
+			size_hint_y: None
+			height: '6sp'
+			
+		ListView:
+			id: list_id
+			
+		# Log line
+		Label: 
+			id: logLabel_id
+			text: ""
+			
+			size_hint_y: None
+			height: '20sp'
+			font_size: '12sp'
+		

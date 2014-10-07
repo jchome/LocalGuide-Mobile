@@ -1,0 +1,19 @@
+/*
+ * Lancer la commande suivante pour insérer les données
+ * cat cretab_pointofinterest.sqlite | sqlite3 ../database.sdb
+ */
+ 
+CREATE TABLE locgui_poi (
+	poiidpoi integer NOT NULL PRIMARY KEY AUTOINCREMENT , 
+	poilbnom varchar(255) NOT NULL , 
+	poiidcat integer NOT NULL , 
+	poiidloc integer NOT NULL , 
+	poinulat char(24) NOT NULL , 
+	poinulon char(24) NOT NULL , 
+	poitxdes text(4000) , 
+	poifiaud varchar(4000) , 
+	poifipho varchar(4000) 
+);
+
+
+

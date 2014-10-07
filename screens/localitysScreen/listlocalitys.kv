@@ -1,0 +1,62 @@
+<ListLocalitys>:
+	logLabel: logLabel_id
+	containerListView: list_id
+
+	BoxLayout:
+		orientation: 'vertical'
+		canvas.before:
+			Color:
+				rgba: 1,1,1, 1
+			Rectangle:
+				source: "images/background.jpg"
+				pos: self.pos
+				size: self.size
+
+		ActionBar:
+			background_image: "images/empty-25b.png"
+			pos_hint: {'top':1}
+			ActionView:
+				use_separator: True
+				ActionPrevious:
+					title: 'Local Guide'
+					#with_previous: False
+					previous_image: "images/ic_action_previous_item.png"
+					app_icon: "images/app-icon.png"
+					on_press: root.go_back()
+				
+				ActionOverflow:
+				
+				ActionButton:
+					text: 'Refresh'
+					icon: "images/ic_action_refresh.png"
+					
+					on_press: root.refresh()
+				
+		# Small Padding
+		Label:
+			canvas.before:
+				Color:
+					rgba: 0.85,0.85,0.85, 1
+				Rectangle:
+					pos: self.pos
+					size: self.size
+			text: "Localités"
+			font_size: '22sp'
+			size_hint_y: None
+			height: sp(28)
+			halign: 'left'
+			text_size: (self.size[0]-sp(20), None)
+			color: (0.5,0.5,0.5, 1)
+			
+		ListView:
+			id: list_id
+			
+		# Log line
+		Label: 
+			id: logLabel_id
+			text: ""
+			
+			size_hint_y: None
+			height: '20sp'
+			font_size: '12sp'
+		

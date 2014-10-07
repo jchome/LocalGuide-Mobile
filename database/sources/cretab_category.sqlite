@@ -1,0 +1,13 @@
+/*
+ * Lancer la commande suivante pour insérer les données
+ * cat cretab_category.sqlite | sqlite3 ../database.sdb
+ */
+ 
+CREATE TABLE locgui_category (
+	catidcat integer NOT NULL PRIMARY KEY AUTOINCREMENT , 
+	catlblib varchar(255) NOT NULL , 
+	catcdcode char(30) NOT NULL 
+);
+
+
+

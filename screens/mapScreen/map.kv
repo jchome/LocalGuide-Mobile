@@ -1,0 +1,29 @@
+<Map>:
+	layout: layout_id
+
+	BoxLayout:
+		orientation: 'vertical'
+
+		ActionBar:
+			pos_hint: {'top':1}
+			ActionView:
+				use_separator: True
+				ActionPrevious:
+					title: 'Carte'
+					#with_previous: False
+					previous_image: "images/ic_action_previous_item.png"
+					app_icon: "images/app-icon.png"
+					on_press: root.go_back()
+				
+				ActionOverflow:
+				
+					
+		# Small Padding
+		Label:
+			text: " "
+			size_hint_y: None
+			height: '6sp'
+		
+		FloatLayout:
+			id: layout_id
+			
