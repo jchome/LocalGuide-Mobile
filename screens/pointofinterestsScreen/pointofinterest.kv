@@ -107,19 +107,26 @@
 					size_hint_y: None
 					height: sp(4)
 					
-				Label:
-					id: poi_description_id
-					text: "texte de description\ntexte de description\n1111\n0000"
-					font_size: '18sp'
-					color: (0.1,0.1,0.1, 1)
-					valign: 'top'
-					padding: (-sp(10), 0)
-					# make it scrollable
-					text_size: (self.width, None)
-					size_hint_y: None
-					size: (self.parent.width, self.texture_size[1] )
-					#height: self.texture_size[1] + sp(20)
-			
+				GridLayout:
+					rows: 1
+					Label:
+						text: " "
+						size_hint_x: None
+						width: sp(8)
+					Label:
+						id: poi_description_id
+						text: "texte de description\ntexte de description\n1111\n0000"
+						font_size: '18sp'
+						color: (0.1,0.1,0.1, 1)
+						valign: 'top'
+						# make it scrollable
+						text_size: (self.width, None)
+						size_hint_y: None
+						size: (self.parent.width, self.texture_size[1] )
+					Label:
+						text: " "
+						size_hint_x: None
+						width: sp(8)
 			
 			
 		#Label:

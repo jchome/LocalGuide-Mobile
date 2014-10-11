@@ -24,7 +24,11 @@ class Map(CustomScreen):
 		self.overlay_server = MyOverlayServer()
 		self.mapview.map.overlays.append( self.overlay_server )
 		self.overlay_server.set_current_position(45.671344,4.748361)
-		self.gps = gps
+		self.gps = None
+		try:
+			self.gps = gps
+		except:
+			pass
 
 	def setItems(self, aLocality, aSetOfPOIs):
 		self.locality = aLocality

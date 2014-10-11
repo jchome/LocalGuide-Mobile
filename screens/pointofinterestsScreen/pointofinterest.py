@@ -31,6 +31,7 @@ class PointOfInterest(CustomScreen):
 	def go_back(self):
 		self.manager.transition = SlideTransition(direction="right")
 		self.manager.current = "ListPointOfInterests"
+		return True
 
 
 class PointOfInterestApp(App):

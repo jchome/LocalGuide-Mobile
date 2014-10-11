@@ -128,7 +128,8 @@ class ListPointOfInterests(CustomScreen):
 	def go_back(self):
 		self.manager.transition = SlideTransition(direction="right")
 		self.manager.current = "Locality"
-
+		return True
+	
 		
 	def setItems(self, aLocality, data):
 		self.allItems = data
