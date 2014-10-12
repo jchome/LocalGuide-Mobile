@@ -75,12 +75,9 @@ class ScrollableText(ScrollView):
 				padding = ScrollableText.set_padding,
 				font_size = ScrollableText.set_font_size
 				)
-		
 	
 	def set_text(self, aText):
 		self._text_widget.text = aText
-		
-		
 		
 	def set_text_color(self, aColor):
 		self._text_widget.color = aColor

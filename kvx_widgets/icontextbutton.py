@@ -3,7 +3,6 @@ Created on Oct 11, 2014
 
 @author: julien
 '''
-from kivy.lang import Builder
 from kivy.uix.behaviors import ButtonBehavior
 from kvx_widgets.icontext import IconText
 

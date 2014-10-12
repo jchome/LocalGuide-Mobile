@@ -1,6 +1,5 @@
 <ListLocalitys>:
-	logLabel: logLabel_id
-	containerListView: list_id
+	list_items: list_items_id
 
 	BoxLayout:
 		orientation: 'vertical'
@@ -48,15 +47,15 @@
 			text_size: (self.size[0]-sp(20), None)
 			color: (0.5,0.5,0.5, 1)
 			
-		ListView:
-			id: list_id
+		ScrollView:
+			GridLayout:
+				id: list_items_id
+				cols: 1
+				size_hint_y: None
+				
+				
+				
+		#ListView:
+		#	id: list_id
 			
-		# Log line
-		Label: 
-			id: logLabel_id
-			text: ""
-			
-			size_hint_y: None
-			height: '20sp'
-			font_size: '12sp'
 		

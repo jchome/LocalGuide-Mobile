@@ -15,49 +15,18 @@ This code is generated.
 ###
 
 import kivy
-from database.categorydatareader import CategoryDataReader
-from kivy.uix.screenmanager import SlideTransition
+from kivy.metrics import sp
 kivy.require('1.0.5')
 
 from kivy.app import App
-from kivy.adapters.listadapter import ListAdapter
-from kivy.lang import Builder
 from screens.customscreen import CustomScreen
 from database.localitydatareader import LocalityDataReader
+from database.categorydatareader import CategoryDataReader
+from kvx_widgets.listiconitembutton import ListIconItemButton
+
 
 __all__ = ("ListLocalitys", "ListLocalitysApp")
 
-Builder.load_string("""
-[CustomListItemLocality@SelectableView+BoxLayout]:
-	orientation: 'horizontal'
-	spacing: '10sp'
-	padding: (sp(20), 0)
-	size_hint_y: None
-	height: '64sp'
-	index: ctx.index
-	canvas.after:
-		Color:
-			rgb: 0.5,0.5,0.5
-		Line:
-			rectangle: self.x,self.y+self.height,self.width,0
-	
-		
-	ListItemButton:
-		selected_color: 0,0,1, 0
-		deselected_color: 1,1,1, 0
-		background_color: 1,1,1, 0
-		background_normal: ""
-		background_down: ""
-		
-		halign: 'left'
-		text_size: (self.width , None)
-		color: [1,1,1, 1]
-		text: ctx.text
-		markup: True
-		font_size: '22sp'
-		
-
-""")
 
 class ListLocalitys(CustomScreen):
 	
@@ -71,32 +40,26 @@ class ListLocalitys(CustomScreen):
 		self.locality = None
 		
 	def updateDisplay(self):
-		list_item_args_converter = \
-			lambda row_index, obj: {'text': obj.loclbnom,
-									'index': row_index,
-									'id': "itemindex_%d" % row_index, 
-									'is_selected': False,
-									'size_hint_y': None,
-									'height': 25}
+		self.list_items.clear_widgets()
+		total_height = 0
+		for (index, locality) in self.allItems.items():
+			itemButton = ListIconItemButton()
+			itemButton.set_left_icon(None)
+			itemButton.set_text(locality.loclbnom)
+			itemButton.set_font_size(sp(22))
+			itemButton.set_index(index)
+			itemButton.height = sp(80)
+			itemButton.left_icon_width = sp(80)
+			itemButton.right_icon_width = sp(40)
+			itemButton.bind(on_press=self.select_item)
+			self.list_items.add_widget(itemButton)
+			total_height += itemButton.height
+		self.list_items.height = total_height
 		
-		my_adapter = ListAdapter(data = self.allItems.itervalues(),
-									args_converter=list_item_args_converter,
-									selection_mode='single',
-									allow_empty_selection=True,
-									template='CustomListItemLocality')
-		
-		my_adapter.bind(on_selection_change=self.item_changed)
-		self.containerListView.adapter = my_adapter
-		
-	def item_changed(self, adapter, *args):
-		if len(adapter.selection) == 0:
-			return
-		self.locality = adapter.data[adapter.selection[0].parent.index]
-		adapter.selection[0].deselect()
-		
+	def select_item(self, anItem):
+		self.locality = self.allItems[anItem.get_index()]
 		nextScreen = self.manager.go_next()
 		nextScreen.set_locality(self.locality)
-		
 		
 	def setItems(self, data):
 		self.allItems = data
