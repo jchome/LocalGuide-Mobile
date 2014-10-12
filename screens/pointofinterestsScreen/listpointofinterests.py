@@ -141,7 +141,7 @@ class ListPointOfInterests(CustomScreen):
 	def refresh(self):
 		pointofinterestHelper = PointOfInterestDataReader()
 		pointofinterestHelper.refreshData()
-		self.setItems(pointofinterestHelper.getAllRecordsBy_poiidloc( self.locality.locidloc ) )
+		self.setItems(self.locality, pointofinterestHelper.getAllRecordsBy_poiidloc( self.locality.locidloc ) )
 	
 class ListPointOfInterestsApp(App):
 	screenName = 'ListPointOfInterests'

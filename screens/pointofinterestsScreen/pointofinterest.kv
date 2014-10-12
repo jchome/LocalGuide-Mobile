@@ -1,4 +1,6 @@
 #:import IconText kvx_widgets.icontext.IconText
+#:import ScrollableText kvx_widgets.scrollabletext.ScrollableText
+
 <PointOfInterest>:
 	poi_icon: poi_icon_id
 	poi_label: poi_label_id
@@ -44,37 +46,9 @@
 				text: "categorie"
 				forced_width: sp(120)
 				
-				
-			#GridLayout:
-			#	cols: 1
-			#	size_hint: (None, None)
-			#	size: (sp(100), sp(120))
-			#	spacing: sp(0)
-			#	Label:
-			#		canvas.before:
-			#			Rectangle:
-			#				pos: self.pos
-			#				size: self.size
-			#				source: "images/category_SPORT.png"
-			#		id: poi_image_id
-			#		text: ""
-			#		size_hint: (None, None)
-			#		size: (sp(100), sp(100))
-			#		pos_hint: {'center_x':0.5, 'top':0}
-			#	Label:
-			#		id: cat_label_id
-			#		text: "categorie"
-			#		font_size: '14sp'
-			#		font_name: "fonts/segoe_ui_light.ttf"
-			#		color: (0.7,0.7,0.7, 1)
-			#		size_hint: (None, None)
-			#		height: sp(18)
-			#		width: sp(100)
-					
-				
 			Label:
 				id: poi_label_id
-				text: "Point Of Interst"
+				text: "Point Of Interest"
 				font_size: '32sp'
 				font_name: "fonts/segoe_ui_light.ttf"
 				size_hint_x: 1
@@ -83,7 +57,6 @@
 				height: sp(107)
 				halign: 'left'
 			
-		
 			
 		Label:
 			canvas.before:
@@ -101,42 +74,12 @@
 			text_size: (self.size[0]-sp(20), None)
 			color: (0.5,0.5,0.5, 1)
 
-		ScrollView:
-			canvas.before:
-				Color:
-					rgba: 0.95,0.95,0.95, 1
-				Rectangle:
-					pos: self.pos
-					size: self.size
-			GridLayout:
-				cols: 1
-				height: poi_description_id.height + sp(20)
-				size_hint_y: None
-				
-				Label:
-					text: " "
-					size_hint_y: None
-					height: sp(4)
-					
-				GridLayout:
-					rows: 1
-					Label:
-						text: " "
-						size_hint_x: None
-						width: sp(8)
-					Label:
-						id: poi_description_id
-						text: "texte de description\ntexte de description\n1111\n0000"
-						font_size: '18sp'
-						color: (0.1,0.1,0.1, 1)
-						valign: 'top'
-						# make it scrollable
-						text_size: (self.width, None)
-						size_hint_y: None
-						size: (self.parent.width, self.texture_size[1] )
-					Label:
-						text: " "
-						size_hint_x: None
-						width: sp(8)
-				
+		ScrollableText:
+			id: poi_description_id
+			text: "texte de description\ntexte de description\n1111\n0000"
+			background_color: (0.95, 0.95, 0.95, 1)
+			text_color: (0.1,0.1,0.1, 1)
+			padding: (sp(4), sp(8))
+			
+		
 	

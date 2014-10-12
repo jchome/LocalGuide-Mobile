@@ -1,3 +1,5 @@
+#:import IconTextButton kvx_widgets.icontextbutton.IconTextButton
+
 <Locality>:
 	grid_widget: grid_id
 	locality_label: locality_label_id
@@ -108,34 +110,16 @@
 			cols: 2
 			size_hint_y: 1
 			
-			Picto_Button:
+			IconTextButton:
 				text: 'Liste'
-				image_source: 'images/collections_view_as_list.png'
+				icon: 'images/collections_view_as_list.png'
 				on_press: root.display_list()
 			
-			Picto_Button:
+			IconTextButton:
 				text: 'Carte'
-				image_source: 'images/location_01.png'
+				icon: 'images/location_01.png'
 				on_press: root.display_map()
 				
 				
 
-<Picto_Button>:
-	size_hint_y: None
-	height: sp(100)
-	textButton: label_id
-	imageButton: image_id
-	Image:
-		id: image_id
-		size_hint: (None, None)
-		size: sp(68), sp(68)
-		pos_hint: {'center_x':0.5}
-		source: 'images/ic_action_star.png'
-		
-		
-	Label:
-		id: label_id
-		text: "abc"
-		font_size: '18sp'
-		color: (0.2,0.2,0.2, 1)
 	

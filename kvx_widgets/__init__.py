@@ -1,4 +1,4 @@
-__all__ = ('IconText')
+__all__ = ('IconText', 'ScrollableText', 'IconTextButton')
 
 
 

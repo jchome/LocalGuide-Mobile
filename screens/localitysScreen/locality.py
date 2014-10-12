@@ -11,11 +11,8 @@ from kivy.app import App
 from database.localitydatareader import LocalityDataReader
 from database.categorydatareader import CategoryDataReader
 from database.pointofinterestdatareader import PointOfInterestDataReader
-from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import SlideTransition
 
-from kivy.properties import StringProperty
-from kivy.uix.behaviors import ButtonBehavior
 from kvx_widgets.icontext import IconText
 
 class Locality(CustomScreen):
@@ -55,7 +52,8 @@ class Locality(CustomScreen):
 		localityHelper = LocalityDataReader()
 		localityHelper.refreshData()
 		matching_localitys = localityHelper.getAllRecordsBy_locidloc(self.locality.locidloc)
-		self.set_locality( matching_localitys[0] )
+		if 0 in matching_localitys.keys():
+			self.set_locality( matching_localitys[0] )
 		
 		# refresh also categories from Web to Database
 		CategoryDataReader().refreshData()
@@ -70,28 +68,6 @@ class Locality(CustomScreen):
 		self.manager.get_screen("ListPointOfInterests").setItems( self.locality, self.pois )
 		self.manager.transition = SlideTransition(direction="left")
 		self.manager.current = "ListPointOfInterests"
-
-
-		
-
-class Picto_Button(ButtonBehavior, BoxLayout):
-	text = StringProperty("")
-	image_source = StringProperty("")
-	
-	
-	def __init__(self, **kwargs):
-		super(Picto_Button, self).__init__(**kwargs)
-		self.orientation = 'vertical'
-		self.bind(text=self.set_text, 
-				image_source=self.set_image_source)
-		
-	def set_text(self, aWidget, aValue):
-		self.textButton.text = aValue
-
-	def set_image_source(self, aWidget, aValue):
-		self.imageButton.source = aValue
-		
-	
 
 
 class LocalityApp(App):
