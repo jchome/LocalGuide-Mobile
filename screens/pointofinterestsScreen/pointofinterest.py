@@ -24,8 +24,10 @@ class PointOfInterest(CustomScreen):
 		self.locality = aLocality
 		self.poi = aPoi
 		self.poi_label.text = aPoi.poilbnom
-		self.cat_label.text = self.categories[aPoi.poiidcat].catlblib
-		self.poi_image.canvas.before.children[1].source = "images/category_%s.png" % self.categories[aPoi.poiidcat].catcdcode
+		self.poi_icon.text = self.categories[aPoi.poiidcat].catlblib
+		self.poi_icon.icon = "images/category_%s.png" % self.categories[aPoi.poiidcat].catcdcode
+		#self.cat_label.text = self.categories[aPoi.poiidcat].catlblib
+		#self.poi_image.canvas.before.children[1].source = "images/category_%s.png" % self.categories[aPoi.poiidcat].catcdcode
 		self.poi_description.text = aPoi.poitxdes
 		
 	def go_back(self):

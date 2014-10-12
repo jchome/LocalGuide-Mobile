@@ -16,6 +16,7 @@ from kivy.uix.screenmanager import SlideTransition
 
 from kivy.properties import StringProperty
 from kivy.uix.behaviors import ButtonBehavior
+from kvx_widgets.icontext import IconText
 
 class Locality(CustomScreen):
 
@@ -43,10 +44,9 @@ class Locality(CustomScreen):
 		for aCategory in self.categories.values():
 			if repartition_catidcat.has_key(aCategory.catidcat):
 				nb_pois = len(repartition_catidcat[aCategory.catidcat] )
-				picto = Picto_POI()
-				picto.label.text = "%s : x %s" % (aCategory.catlblib, nb_pois)
-				picto.image.source = 'images/category_%s.png' % aCategory.catcdcode
-				#newLabel = Label(text="%s : %s points" % (aCategory.catlblib, nb_pois ) )
+				picto = IconText()
+				picto.set_text( "%s : x %s" % (aCategory.catlblib, nb_pois) )
+				picto.set_icon( 'images/category_%s.png' % aCategory.catcdcode )
 				self.grid_widget.add_widget( picto )
 			
 		
@@ -71,10 +71,7 @@ class Locality(CustomScreen):
 		self.manager.transition = SlideTransition(direction="left")
 		self.manager.current = "ListPointOfInterests"
 
-class Picto_POI(BoxLayout):
-	def __init__(self, **kwargs):
-		super(Picto_POI, self).__init__(**kwargs)
-		self.orientation = 'vertical'
+
 		
 
 class Picto_Button(ButtonBehavior, BoxLayout):

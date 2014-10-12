@@ -1,9 +1,9 @@
+#:import IconText kvx_widgets.icontext.IconText
 <PointOfInterest>:
+	poi_icon: poi_icon_id
 	poi_label: poi_label_id
-	poi_image: poi_image_id
 	poi_description: poi_description_id
-	cat_label: cat_label_id
-
+	
 	BoxLayout:
 		orientation: 'vertical'
 		canvas.before:
@@ -34,31 +34,42 @@
 			size_hint_y: None
 			height: sp(120)
 			spacing: sp(30)
-			GridLayout:
-				cols: 1
-				size_hint: (None, None)
-				size: (sp(100), sp(120))
-				spacing: sp(0)
-				Label:
-					canvas.before:
-						Rectangle:
-							pos: self.pos
-							size: self.size
-							source: "images/category_SPORT.png"
-					id: poi_image_id
-					text: ""
-					size_hint: (None, None)
-					size: (sp(100), sp(100))
-					pos_hint: {'center_x':0.5, 'top':0}
-				Label:
-					id: cat_label_id
-					text: "categorie"
-					font_size: '14sp'
-					font_name: "fonts/segoe_ui_light.ttf"
-					color: (0.7,0.7,0.7, 1)
-					size_hint: (None, None)
-					height: sp(18)
-					width: sp(100)
+			
+			IconText:
+				id: poi_icon_id
+				icon: "images/category_SPORT.png"
+				icon_size: sp(100)
+				font_size: sp(14)
+				text_color: (0.7,0.7,0.7, 1)
+				text: "categorie"
+				forced_width: sp(120)
+				
+				
+			#GridLayout:
+			#	cols: 1
+			#	size_hint: (None, None)
+			#	size: (sp(100), sp(120))
+			#	spacing: sp(0)
+			#	Label:
+			#		canvas.before:
+			#			Rectangle:
+			#				pos: self.pos
+			#				size: self.size
+			#				source: "images/category_SPORT.png"
+			#		id: poi_image_id
+			#		text: ""
+			#		size_hint: (None, None)
+			#		size: (sp(100), sp(100))
+			#		pos_hint: {'center_x':0.5, 'top':0}
+			#	Label:
+			#		id: cat_label_id
+			#		text: "categorie"
+			#		font_size: '14sp'
+			#		font_name: "fonts/segoe_ui_light.ttf"
+			#		color: (0.7,0.7,0.7, 1)
+			#		size_hint: (None, None)
+			#		height: sp(18)
+			#		width: sp(100)
 					
 				
 			Label:
@@ -127,24 +138,5 @@
 						text: " "
 						size_hint_x: None
 						width: sp(8)
-			
-			
-		#Label:
-		#	canvas.before:
-		#		Color:
-		#			rgba: 0.85,0.85,0.85, 1
-		#		Rectangle:
-		#			pos: self.pos
-		#			size: self.size
-		#	text: "Accès"
-		#	font_size: '22sp'
-		#	size_hint_y: None
-		#	height: sp(28)
-		#	halign: 'left'
-		#	valign: 'middle'
-		#	text_size: (self.size[0]-sp(20), None)
-		#	color: (0.6,0.6,0.6, 1)
-			
-				
 				
 	
