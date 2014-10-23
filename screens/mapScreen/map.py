@@ -19,6 +19,7 @@ class Map(CustomScreen):
 		super(CustomScreen, self).__init__()
 		self.name = aName
 		self.mapview = MapViewer(maptype="Roadmap", provider="openstreetmap")
+		self.active_categories = []
 		self.layout.add_widget(self.mapview)
 		self.mapview.map.scale = 10000
 		self.overlay_server = MyOverlayServer()
@@ -27,12 +28,21 @@ class Map(CustomScreen):
 		self.gps = None
 		try:
 			self.gps = gps
+			self.gps.configure(on_location=self.update_position)
+			self.gps.start()
 		except:
 			pass
 
 	def setItems(self, aLocality, aSetOfPOIs):
 		self.locality = aLocality
-		self.overlay_server.pois = aSetOfPOIs
+		allPois = []
+		for aPoi in aSetOfPOIs:
+			if aPoi.poiidcat in self.active_categories:
+				allPois.append(aPoi)
+		self.overlay_server.pois = allPois
+		
+	def set_active_categories(self, anArray):
+		self.active_categories = anArray
 		
 	def on_pre_enter(self):
 		# attention, "self.parent.width" n'est disponible qu'après affichage
@@ -67,9 +77,12 @@ class Map(CustomScreen):
 
 
 	def update_position(self, **kwargs):
-		lat = kwargs['lat']
-		lon = kwargs['lon']
-		self.overlay_server.set_current_position(lat, lon)
+		try:
+			lat = kwargs['lat']
+			lon = kwargs['lon']
+			self.overlay_server.set_current_position(lat, lon)
+		except:
+			pass
 
 class MapApp(App):
 	screenName = 'Map'

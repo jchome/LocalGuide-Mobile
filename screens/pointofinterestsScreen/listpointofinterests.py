@@ -17,6 +17,8 @@ This code is generated.
 import kivy
 from database.categorydatareader import CategoryDataReader
 from kivy.uix.screenmanager import SlideTransition
+from kvx_widgets.listiconitembutton import ListIconItemButton
+from kivy.metrics import sp
 kivy.require('1.0.5')
 
 from kivy.app import App
@@ -26,56 +28,6 @@ from screens.customscreen import CustomScreen
 from database.pointofinterestdatareader import PointOfInterestDataReader
 
 __all__ = ("ListPointOfInterests", "ListPointOfInterestsApp")
-
-Builder.load_string("""
-[CustomListItemPointOfInterest@SelectableView+BoxLayout]:
-	orientation: 'horizontal'
-	spacing: '10sp'
-	padding: (sp(20), 0)
-	size_hint_y: None
-	height: '64sp'
-	index: ctx.index
-	canvas.after:
-		Color:
-			rgb: 0.5,0.5,0.5
-		Line:
-			rectangle: self.x,self.y+self.height,self.width,0
-	
-	
-	# Icon of item
-	ListItemButton:
-		id: mainListItemButton
-		canvas.before:
-			Color:
-				rgba: 1,1,1, 1
-			Rectangle:
-				source: "images/category_%s.png" % ctx.category.catcdcode
-				pos: self.pos
-				size: self.size
-		size_hint_x: None
-		width: '64sp'
-		selected_color: 0,0,0, 0
-		deselected_color: 1,1,1, 0
-		background_color: 1,1,1, 0
-		background_normal: ""
-		background_down: ""
-		
-	ListItemButton:
-		selected_color: 0,0,1, 0
-		deselected_color: 1,1,1, 0
-		background_color: 1,1,1, 0
-		background_normal: ""
-		background_down: ""
-		
-		halign: 'left'
-		text_size: (self.width , None)
-		color: [1,1,1, 1]
-		text: ctx.text
-		markup: True
-		font_size: '22sp'
-		
-
-""")
 
 class ListPointOfInterests(CustomScreen):
 	
@@ -89,38 +41,39 @@ class ListPointOfInterests(CustomScreen):
 		self.pointofinterest = None
 		self.locality = None
 		self.category_collection = CategoryDataReader().getAllRecords()
+		self.active_categories = []
 		
 	def updateDisplay(self):
-		list_item_args_converter = \
-			lambda row_index, obj: {'text': obj.poilbnom,
-									'category': self.category_collection[obj.poiidcat],
-									'index': row_index,
-									'id': "itemindex_%d" % row_index, 
-									'is_selected': False,
-									'size_hint_y': None,
-									'height': 25}
+		self.list_items.clear_widgets()
+		total_height = 0
+		for (index, poi) in self.allItems.items():
+			category = self.category_collection[poi.poiidcat]
+			# ne pas présenter les poi qui ont la categorie desactivée
+			if not category.catidcat in self.active_categories:
+				continue
+			itemButton = ListIconItemButton()
+			itemButton.set_left_icon( "images/category_%s.png" % category.catcdcode )
+			itemButton.set_text(poi.poilbnom)
+			itemButton.set_font_size(sp(22))
+			itemButton.set_index(index)
+			itemButton.height = sp(80)
+			itemButton.left_icon_width = sp(76)
+			itemButton.right_icon_width = sp(40)
+			itemButton.bind(on_press=self.select_item)
+			self.list_items.add_widget(itemButton)
+			total_height += itemButton.height
+		self.list_items.height = total_height
+			
 		
-		my_adapter = ListAdapter(data = self.allItems.itervalues(),
-									args_converter=list_item_args_converter,
-									selection_mode='single',
-									allow_empty_selection=True,
-									template='CustomListItemPointOfInterest')
-		
-		my_adapter.bind(on_selection_change=self.item_changed)
-		self.containerListView.adapter = my_adapter
-		
-	def item_changed(self, adapter, *args):
-		if len(adapter.selection) == 0:
-			return
-		self.pointofinterest = adapter.data[adapter.selection[0].parent.index]
-		adapter.selection[0].deselect()
-		
+	def select_item(self, anItem):
+		self.pointofinterest = self.allItems[anItem.get_index()]
 		self.manager.get_screen("PointOfInterest").setItems( self.locality, self.pointofinterest )
 		self.manager.transition = SlideTransition(direction="left")
 		self.manager.current = "PointOfInterest"
 		
 	
 	def display_map(self):
+		self.manager.get_screen("Map").set_active_categories(self.active_categories)
 		self.manager.get_screen("Map").setItems( self.locality, self.allItems.values() )
 		self.manager.transition = SlideTransition(direction="left")
 		self.manager.current = "Map"
@@ -137,11 +90,17 @@ class ListPointOfInterests(CustomScreen):
 		self.updateDisplay()
 		self.pointofinterest = None
 		
-
+	def set_active_categories(self, anArray):
+		self.active_categories = anArray
+		
 	def refresh(self):
 		pointofinterestHelper = PointOfInterestDataReader()
 		pointofinterestHelper.refreshData()
 		self.setItems(self.locality, pointofinterestHelper.getAllRecordsBy_poiidloc( self.locality.locidloc ) )
+		
+		# refresh also categories from Web to Database
+		CategoryDataReader().refreshData()
+		self.category_collection = CategoryDataReader().getAllRecords()
 	
 class ListPointOfInterestsApp(App):
 	screenName = 'ListPointOfInterests'

@@ -1,7 +1,7 @@
 #:import IconTextButton kvx_widgets.icontextbutton.IconTextButton
 
 <Locality>:
-	grid_widget: grid_id
+	grid_widget: grid_widget_id
 	locality_label: locality_label_id
 
 	BoxLayout:
@@ -79,7 +79,7 @@
 					pos: self.pos
 					size: self.size
 		
-			id: grid_id
+			id: grid_widget_id
 			cols: 2
 			size_hint_y: 1
 			
@@ -98,7 +98,7 @@
 			halign: 'left'
 			valign: 'middle'
 			text_size: (self.size[0]-sp(20), None)
-			color: (0.6,0.6,0.6, 1)
+			color: (0.5,0.5,0.5, 1)
 			
 		GridLayout:
 			canvas.before:
@@ -108,7 +108,8 @@
 					pos: self.pos
 					size: self.size
 			cols: 2
-			size_hint_y: 1
+			size_hint_y: None
+			height: sp(110)
 			
 			IconTextButton:
 				text: 'Liste'

@@ -13,7 +13,7 @@ from database.categorydatareader import CategoryDataReader
 from database.pointofinterestdatareader import PointOfInterestDataReader
 from kivy.uix.screenmanager import SlideTransition
 
-from kvx_widgets.icontext import IconText
+from kvx_widgets.icontextcounterbutton import IconTextCounterButton
 
 class Locality(CustomScreen):
 
@@ -23,6 +23,7 @@ class Locality(CustomScreen):
 		self.name = aName
 		self.locality = None
 		self.categories = CategoryDataReader().getAllRecords()
+		self.active_categories = self.categories.keys()
 
 	def set_locality(self, aLocality):
 		self.locality = aLocality
@@ -41,11 +42,29 @@ class Locality(CustomScreen):
 		for aCategory in self.categories.values():
 			if repartition_catidcat.has_key(aCategory.catidcat):
 				nb_pois = len(repartition_catidcat[aCategory.catidcat] )
-				picto = IconText()
-				picto.set_text( "%s : x %s" % (aCategory.catlblib, nb_pois) )
-				picto.set_icon( 'images/category_%s.png' % aCategory.catcdcode )
+				picto = IconTextCounterButton()
+				picto.id = "category_%d" % aCategory.catidcat
+				picto.text = aCategory.catlblib
+				picto.icon = 'images/category_%s.png' % aCategory.catcdcode
+				picto.counter = "%s" % nb_pois
+				picto.counter_position = 'top-right'
+				picto.bind(on_press=self.switch_category)
 				self.grid_widget.add_widget( picto )
+				
 			
+	def switch_category(self, aIconTextCounterButton):
+		category_id = aIconTextCounterButton.id.split('_')[1]
+		aCategory = self.categories[int(category_id)]
+		if aIconTextCounterButton.is_active():
+			aIconTextCounterButton.set_inactive()
+			aIconTextCounterButton.icon = 'images/category_%s-disabled.png' % aCategory.catcdcode
+			if aCategory.catidcat in self.active_categories:
+				self.active_categories.remove(aCategory.catidcat)
+		else:
+			aIconTextCounterButton.set_active()
+			aIconTextCounterButton.icon = 'images/category_%s.png' % aCategory.catcdcode
+			if not aCategory.catidcat in self.active_categories:
+				self.active_categories.append(aCategory.catidcat)
 		
 		
 	def refresh(self):
@@ -60,11 +79,13 @@ class Locality(CustomScreen):
 		self.categories = CategoryDataReader().getAllRecords()
 
 	def display_map(self):
+		self.manager.get_screen("Map").set_active_categories(self.active_categories)
 		self.manager.get_screen("Map").setItems( self.locality, self.pois.values() )
 		self.manager.transition = SlideTransition(direction="left")
 		self.manager.current = "Map"
 		
 	def display_list(self):
+		self.manager.get_screen("ListPointOfInterests").set_active_categories(self.active_categories)
 		self.manager.get_screen("ListPointOfInterests").setItems( self.locality, self.pois )
 		self.manager.transition = SlideTransition(direction="left")
 		self.manager.current = "ListPointOfInterests"

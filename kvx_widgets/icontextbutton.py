@@ -9,7 +9,6 @@ from kvx_widgets.icontext import IconText
 
 class IconTextButton(ButtonBehavior, IconText):
 	
-	
 	def __init__(self, **kwargs):
 		super(IconTextButton, self).__init__(**kwargs)
 	

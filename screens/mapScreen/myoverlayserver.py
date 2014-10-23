@@ -32,9 +32,6 @@ class MyOverlayServer(OverlayServer):
 		
 		for aPoi in self.pois:
 			(poi_x,poi_y) = aMapViewer.get_local_xy_from_latlon(float(aPoi.poinulat), float(aPoi.poinulon), display_width, display_height)
-			#with aMapViewer.canvas:
-			#	Color(1, 0, 0, 0.8)
-			#	Ellipse(pos=(x + poi_x/aMapViewer.scale - radius/2, y + poi_y/aMapViewer.scale - radius/2), size=(radius,radius))
 			img_poi = Rectangle( pos=(x + poi_x/aMapViewer.scale - radius/2, y + poi_y/aMapViewer.scale ) )
 			img_poi.source='images/location_%s.png' % self.categories[aPoi.poiidcat].catcdcode
 			img_poi.size = (radius,radius)
@@ -42,8 +39,10 @@ class MyOverlayServer(OverlayServer):
 		
 		# draw the current position
 		(curr_x, curr_y) = aMapViewer.get_local_xy_from_latlon(self.current_position[0], self.current_position[1], display_width, display_height)
-		aMapViewer.canvas.add(Color(0, 1, 1, 0.8))
-		aMapViewer.canvas.add(Ellipse(pos=(x + curr_x/aMapViewer.scale - radius/2, y + curr_y/aMapViewer.scale - radius/2), size=(radius/4,radius/4)) )
+		img_position = Rectangle( pos=(x + curr_x/aMapViewer.scale - radius/2, y + curr_y/aMapViewer.scale - radius/2) )
+		img_position.source='images/my-position.png'
+		img_position.size = (radius,radius)
+		aMapViewer.canvas.add(img_position)
 		
 		return
 	

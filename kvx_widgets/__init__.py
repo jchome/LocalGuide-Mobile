@@ -1,4 +1,5 @@
-__all__ = ('IconText', 'ScrollableText', 'IconTextButton')
+__all__ = ('IconText', 'ScrollableText', 'IconTextButton', 'IconTextCounter', 
+		'IconTextCounterButton')
 
 
 
