@@ -51,9 +51,7 @@ class Map(CustomScreen):
 		try:
 			self.gps.configure(on_location=self.update_position)
 			self.gps.start()
-		except NotImplementedError:
-			#import traceback; traceback.print_exc()
-			#self.gps_status = 'GPS is not implemented for your platform'
+		except:
 			pass
 		
 		return True
@@ -62,7 +60,8 @@ class Map(CustomScreen):
 		self.manager.transition = SlideTransition(direction="right")
 		self.manager.current = "Locality"
 		try:
-			self.gps.stop()
+			if self.gps is not None:
+				self.gps.stop()
 		except:
 			pass
 

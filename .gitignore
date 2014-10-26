@@ -7,5 +7,5 @@ kvmap/core/cache
 .project
 .pydevproject
 .settings
-
+.gitignore
 

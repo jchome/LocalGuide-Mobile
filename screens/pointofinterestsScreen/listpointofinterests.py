@@ -22,8 +22,6 @@ from kivy.metrics import sp
 kivy.require('1.0.5')
 
 from kivy.app import App
-from kivy.adapters.listadapter import ListAdapter
-from kivy.lang import Builder
 from screens.customscreen import CustomScreen
 from database.pointofinterestdatareader import PointOfInterestDataReader
 
