@@ -23,19 +23,29 @@ class PointOfInterestDataReader(DataReader):
 		fullDict = DataReader.getAllRecords(self)
 		return PointOfInterest.readAllFromDict(fullDict)
 	
-	def refreshData(self):
-		self.purgeTable()
-		allObjects = PointOfInterestJsonRetriever().retrieveAll()
+	def refreshData(self, message_writer = None):
+		allObjects = PointOfInterestJsonRetriever().retrieveAll(message_writer)
+		if allObjects is None:
+			return
+		self.purgeTable(message_writer)
+		
 		for anObject in allObjects.itervalues():
 			json_data = { "poiidpoi" : anObject.poiidpoi, "poilbnom" : anObject.poilbnom, "poiidcat" : anObject.poiidcat, "poiidloc" : anObject.poiidloc, "poinulat" : anObject.poinulat, "poinulon" : anObject.poinulon, "poitxdes" : anObject.poitxdes, "poifiaud" : anObject.poifiaud, "poifipho" : anObject.poifipho }
-			self.insertData(json_data)
-		
-	def saveOrUpdate(self, anObject):
+			self.insertData(json_data, message_writer)
+
+			if anObject.poifiaud is not None and anObject.poifiaud != "":
+				message_writer.write("Recuperation de fichier (Audio)")
+				PointOfInterestJsonRetriever().retrieve_file_poifiaud(anObject.poiidpoi, self.stored_files_path)
+			if anObject.poifipho is not None and anObject.poifipho != "":
+				message_writer.write("Recuperation de fichier (Photo)")
+				PointOfInterestJsonRetriever().retrieve_file_poifipho(anObject.poiidpoi, self.stored_files_path)
+
+	def saveOrUpdate(self, anObject, message_writer = None):
 		json_data = { "poiidpoi" : anObject.poiidpoi, "poilbnom" : anObject.poilbnom, "poiidcat" : anObject.poiidcat, "poiidloc" : anObject.poiidloc, "poinulat" : anObject.poinulat, "poinulon" : anObject.poinulon, "poitxdes" : anObject.poitxdes, "poifiaud" : anObject.poifiaud, "poifipho" : anObject.poifipho }
 		if anObject.poiidpoi is None:
-			anObject.poiidpoi = self.insertData(json_data)
+			anObject.poiidpoi = self.insertData(json_data, message_writer)
 		else:
-			self.updateData(json_data)
+			self.updateData(json_data, message_writer)
 
 	
 
@@ -61,9 +71,9 @@ class PointOfInterestJsonRetriever(JsonRetriever):
 	def __init__(self):
 		JsonRetriever.__init__(self)
 		
-	def retrieveAll(self):
+	def retrieveAll(self, message_writer):
 		URL_ALL = "pointofinterest/listpointofinterestsjson"
-		fullDict = self.retrieveFromUrl(URL_ALL)
+		fullDict = self.retrieveFromUrl(URL_ALL, message_writer)
 		return PointOfInterest.readAllFromDict(fullDict)
 
 
@@ -85,3 +95,15 @@ class PointOfInterestJsonRetriever(JsonRetriever):
 		fullDict = self.retrieveFromUrl(URL_ALL)
 		return PointOfInterest.readAllFromDict(fullDict)
 		
+
+
+	def retrieve_file_poifiaud(self, key, path_to_save):
+		URL_GET_FILE = "pointofinterest/getpointofinterestjson/get_file_poifiaud/" + key
+		self.retrieveFile(URL_GET_FILE, "poifiaud", path_to_save)
+
+	def retrieve_file_poifipho(self, key, path_to_save):
+		URL_GET_FILE = "pointofinterest/getpointofinterestjson/get_file_poifipho/" + key
+		self.retrieveFile(URL_GET_FILE, "poifipho", path_to_save)
+
+
+	

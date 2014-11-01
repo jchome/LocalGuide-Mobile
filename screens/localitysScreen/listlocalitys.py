@@ -16,6 +16,11 @@ This code is generated.
 
 import kivy
 from kivy.metrics import sp
+from kvx_widgets.refreshpopup import RefreshPopup
+from kivy.clock import Clock
+import time
+from kivy.animation import Animation
+import threading
 kivy.require('1.0.5')
 
 from kivy.app import App
@@ -26,6 +31,7 @@ from kvx_widgets.listiconitembutton import ListIconItemButton
 
 
 __all__ = ("ListLocalitys", "ListLocalitysApp")
+
 
 
 class ListLocalitys(CustomScreen):
@@ -69,12 +75,26 @@ class ListLocalitys(CustomScreen):
 		
 		
 	def refresh(self):
-		localityHelper = LocalityDataReader()
-		localityHelper.refreshData()
-		self.setItems(localityHelper.getAllRecords())
+		popup = RefreshPopup(on_open=self._popup_opened)
+		popup.open()
+	
+	def _popup_opened(self, popup):
+		threading.Thread(target=self._start_refresh, args=(popup,)).start()
 		
+	def _start_refresh(self, popup):
+		popup.write("1/2 : Mise à jour des Localités :")
+		localityHelper = LocalityDataReader()
+		localityHelper.refreshData(popup)
+		self.setItems(localityHelper.getAllRecords())
+	
 		# refresh also categories from Web to Database
-		CategoryDataReader().refreshData()
+		popup.write("2/2 : Mise à jour des Catégories :")
+		CategoryDataReader().refreshData(popup)
+		
+		popup.write("Terminé !")
+		popup.dismiss()
+		
+		
 	
 class ListLocalitysApp(App):
 	screenName = 'ListLocalitys'

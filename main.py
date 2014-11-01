@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import kivy
+from database.pointofinterestdatareader import PointOfInterestJsonRetriever
 kivy.require('1.0.5')
 
 from kivy.config import Config
@@ -39,7 +40,7 @@ class Welcome(CustomScreen):
 		### passer a l'écran clients
 		localityHelper = LocalityDataReader()
 		self.manager.get_screen("ListLocalitys").setItems( localityHelper.getAllRecords() )
-
+		
 
 class WelcomeApp(App):
 	

@@ -23,19 +23,20 @@ class CategoryDataReader(DataReader):
 		fullDict = DataReader.getAllRecords(self)
 		return Category.readAllFromDict(fullDict)
 	
-	def refreshData(self):
-		self.purgeTable()
+	def refreshData(self, message_writer = None):
+		self.purgeTable(message_writer)
 		allObjects = CategoryJsonRetriever().retrieveAll()
 		for anObject in allObjects.itervalues():
 			json_data = { "catidcat" : anObject.catidcat, "catlblib" : anObject.catlblib, "catcdcode" : anObject.catcdcode }
-			self.insertData(json_data)
-		
-	def saveOrUpdate(self, anObject):
+			self.insertData(json_data, message_writer)
+
+
+	def saveOrUpdate(self, anObject, message_writer = None):
 		json_data = { "catidcat" : anObject.catidcat, "catlblib" : anObject.catlblib, "catcdcode" : anObject.catcdcode }
 		if anObject.catidcat is None:
-			anObject.catidcat = self.insertData(json_data)
+			anObject.catidcat = self.insertData(json_data, message_writer)
 		else:
-			self.updateData(json_data)
+			self.updateData(json_data, message_writer)
 
 	
 
@@ -63,3 +64,7 @@ class CategoryJsonRetriever(JsonRetriever):
 		fullDict = self.retrieveFromUrl(URL_ALL)
 		return Category.readAllFromDict(fullDict)
 		
+
+
+
+	

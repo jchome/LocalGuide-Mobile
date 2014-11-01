@@ -41,7 +41,7 @@ Builder.load_string("""
 				width: sp(8)
 			Label:
 				id: _text_widget_id
-				text: "no text yet"
+				text: ""
 				font_size: '18sp'
 				color: (0.1,0.1,0.1, 1)
 				valign: 'top'
@@ -103,4 +103,5 @@ class ScrollableText(ScrollView):
 		
 	def set_font_size(self, aSize):
 		self._text_widget.font_size = aSize
+	
 		

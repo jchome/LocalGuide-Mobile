@@ -1,3 +1,4 @@
+#:import IconTextButton kvx_widgets.icontextbutton.IconTextButton
 #:import IconText kvx_widgets.icontext.IconText
 #:import ScrollableText kvx_widgets.scrollabletext.ScrollableText
 
@@ -5,6 +6,11 @@
 	poi_icon: poi_icon_id
 	poi_label: poi_label_id
 	poi_description: poi_description_id
+	btn_audio: btn_audio_id
+	btn_photo: btn_photo_id
+	grid_btn: grid_btn_id
+	multimedia_widgets_container: multimedia_widgets_container_id
+	multimedia_title_label: multimedia_title_label_id
 	
 	BoxLayout:
 		orientation: 'vertical'
@@ -76,10 +82,55 @@
 
 		ScrollableText:
 			id: poi_description_id
-			text: "texte de description\ntexte de description\n1111\n0000"
+			text: "Aucune description"
 			background_color: (0.95, 0.95, 0.95, 1)
 			text_color: (0.1,0.1,0.1, 1)
 			padding: (sp(4), sp(8))
 			
-		
+		BoxLayout:
+			id: multimedia_widgets_container_id
+			orientation: 'vertical'
+			size_hint_y: None
+			height: sp(130)
+			
+			Label:
+				id: multimedia_title_label_id
+				canvas.before:
+					Color:
+						rgba: 0.85,0.85,0.85, 1
+					Rectangle:
+						pos: self.pos
+						size: self.size
+				text: "Documents multimedia"
+				font_size: '22sp'
+				size_hint_y: None
+				height: sp(28)
+				halign: 'left'
+				valign: 'middle'
+				text_size: (self.size[0]-sp(20), None)
+				color: (0.5,0.5,0.5, 1)
+			
+			GridLayout:
+				id: grid_btn_id
+				canvas.before:
+					Color:
+						rgba: 0.95,0.95,0.95, 1
+					Rectangle:
+						pos: self.pos
+						size: self.size
+				cols: 2
+				size_hint_y: None
+				height: sp(110)
+				
+				IconTextButton:
+					id: btn_audio_id
+					text: 'Audio'
+					icon: 'images/audio.png'
+					on_press: root.play_audio()
+				IconTextButton:
+					id: btn_photo_id
+					text: 'Photo'
+					icon: 'images/photo.png'
+					on_press: root.show_photo()
+			
 	

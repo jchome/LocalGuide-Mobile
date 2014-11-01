@@ -14,6 +14,9 @@ from database.pointofinterestdatareader import PointOfInterestDataReader
 from kivy.uix.screenmanager import SlideTransition
 
 from kvx_widgets.icontextcounterbutton import IconTextCounterButton
+from kvx_widgets.refreshpopup import RefreshPopup
+from kivy.clock import Clock
+import threading
 
 class Locality(CustomScreen):
 
@@ -68,15 +71,42 @@ class Locality(CustomScreen):
 		
 		
 	def refresh(self):
+		popup = RefreshPopup(on_open=self._popup_opened)
+		popup.open()
+	
+	def _popup_opened(self, popup):
+		threading.Thread(target=self._start_refresh, args=(popup,)).start()
+		
+	def _start_refresh(self, popup):
+		popup.write("1/2 : Mise à jour de la Localité :")
 		localityHelper = LocalityDataReader()
-		localityHelper.refreshData()
+		localityHelper.refreshData(popup)
 		matching_localitys = localityHelper.getAllRecordsBy_locidloc(self.locality.locidloc)
 		if 0 in matching_localitys.keys():
 			self.set_locality( matching_localitys[0] )
 		
 		# refresh also categories from Web to Database
-		CategoryDataReader().refreshData()
+		self.write("2/2 : Mise à jour des Catégories :")
+		CategoryDataReader().refreshData(popup)
 		self.categories = CategoryDataReader().getAllRecords()
+		
+		self.write("Terminé !")
+		
+	
+	def _do_refresh_data(self, popup):
+		popup.write("1/2 : Mise à jour de la Localité :")
+		localityHelper = LocalityDataReader()
+		localityHelper.refreshData(popup)
+		matching_localitys = localityHelper.getAllRecordsBy_locidloc(self.locality.locidloc)
+		if 0 in matching_localitys.keys():
+			self.set_locality( matching_localitys[0] )
+		
+		# refresh also categories from Web to Database
+		popup.write("2/2 : Mise à jour des Catégories :")
+		CategoryDataReader().refreshData(popup)
+		self.categories = CategoryDataReader().getAllRecords()
+		popup.write("Terminé !")
+		popup.dismiss()
 
 	def display_map(self):
 		self.manager.get_screen("Map").set_active_categories(self.active_categories)

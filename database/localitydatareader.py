@@ -23,19 +23,22 @@ class LocalityDataReader(DataReader):
 		fullDict = DataReader.getAllRecords(self)
 		return Locality.readAllFromDict(fullDict)
 	
-	def refreshData(self):
-		self.purgeTable()
+	def refreshData(self, message_writer = None):
 		allObjects = LocalityJsonRetriever().retrieveAll()
+		if allObjects is None:
+			return None
+		self.purgeTable(message_writer)
 		for anObject in allObjects.itervalues():
 			json_data = { "locidloc" : anObject.locidloc, "loclbnom" : anObject.loclbnom, "locnulat" : anObject.locnulat, "locnulon" : anObject.locnulon }
-			self.insertData(json_data)
-		
-	def saveOrUpdate(self, anObject):
+			self.insertData(json_data, message_writer)
+
+
+	def saveOrUpdate(self, anObject, message_writer = None):
 		json_data = { "locidloc" : anObject.locidloc, "loclbnom" : anObject.loclbnom, "locnulat" : anObject.locnulat, "locnulon" : anObject.locnulon }
 		if anObject.locidloc is None:
-			anObject.locidloc = self.insertData(json_data)
+			anObject.locidloc = self.insertData(json_data, message_writer)
 		else:
-			self.updateData(json_data)
+			self.updateData(json_data, message_writer)
 
 	
 
@@ -54,12 +57,18 @@ class LocalityJsonRetriever(JsonRetriever):
 	def retrieveAll(self):
 		URL_ALL = "locality/listlocalitysjson"
 		fullDict = self.retrieveFromUrl(URL_ALL)
-		return Locality.readAllFromDict(fullDict)
+		if fullDict is not None:
+			return Locality.readAllFromDict(fullDict)
 
 
 	# get all <Localité> by <Identifiant>, using <locidloc>
 	def retrieveAllBy_locidloc(self, value):
 		URL_ALL = "locality/listlocalitysjson/findBy_locidloc/"+str(value)
 		fullDict = self.retrieveFromUrl(URL_ALL)
-		return Locality.readAllFromDict(fullDict)
+		if fullDict is not None:
+			return Locality.readAllFromDict(fullDict)
 		
+
+
+
+	
